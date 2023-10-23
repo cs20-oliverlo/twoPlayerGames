@@ -9,18 +9,26 @@ cnv.height = 120;
 player = [
     {
         x: 0,
-        y: 0,
+        y: 10,
+        w: 25,
+        h: 40,
+        color: "red",
         xSpeed: 0,
         xAccel: 0,
         go: false,
+        goPastState: false,
         points: 0
     },
     {
         x: 0,
-        y: 0,
+        y: 70,
+        w: 25,
+        h: 40,
+        color: "green",
         xSpeed: 0,
         xAccel: 0,
         go: false,
+        goPastState: false,
         points: 0
     }
 ];
@@ -110,11 +118,12 @@ function keyupHandler(event) {
 // Animation
 requestAnimationFrame(animate);
 function animate() {
+    background();
 
     players();
 
-    for (let i = 0; i < 2; i++) {
-        console.log(player[i].go);
+    for (let i = 0; i < 1; i++) {
+        console.log(player[i].go, player[i].goPastState, player[i].x);
     }
 
     // Request Animation Frame
@@ -122,9 +131,27 @@ function animate() {
 }
 
 function players() {
+    for (let i = 0; i < player.length; i++) {
+        drawPlayers(i);
+    }
+
     controls();
 }
 
-function controls() {
+function drawPlayers(n) {
+    ctx.fillStyle = `${player[n].color}`;
+    ctx.fillRect(player[n].x, player[n].y, player[n].w, player[n].h);
+}
 
+function background() {
+
+}
+
+function controls() {
+    for (let i = 0; i < player.length; i++) {
+        if (player[i].go === true && player[i].go !== player[i].goPastState) {
+            player[i].x++;
+        }
+        player[i].goPastState = player[i].go;
+    }
 }
